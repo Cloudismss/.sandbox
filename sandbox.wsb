@@ -1,0 +1,22 @@
+<Configuration>
+  <MappedFolders>
+    <MappedFolder>
+      <HostFolder>%USERPROFILE%\Documents\Projects\.sandbox\Sandbox\scripts</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Shared\scripts</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>%USERPROFILE%\Documents\Projects\.sandbox\Sandbox\projects\test</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Documents\Projects\test</SandboxFolder>
+      <ReadOnly>false</ReadOnly>
+    </MappedFolder>
+    <MappedFolder>
+      <HostFolder>%USERPROFILE%\Documents\Projects\.sandbox\PowerShell</HostFolder>
+      <SandboxFolder>C:\Users\WDAGUtilityAccount\Documents\PowerShell</SandboxFolder>
+      <ReadOnly>true</ReadOnly>
+    </MappedFolder>
+  </MappedFolders>
+  <LogonCommand>
+    <Command>powershell.exe -ExecutionPolicy Bypass -File C:\Users\WDAGUtilityAccount\Shared\scripts\setup.ps1</Command>
+  </LogonCommand>
+</Configuration>
