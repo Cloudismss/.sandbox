@@ -29,6 +29,8 @@ winget install Starship.Starship Fastfetch-cli.Fastfetch junegunn.fzf lsd-rs.lsd
 Write-Information "Downloading VSCode..."
 winget install Microsoft.VisualStudioCode --accept-source-agreements --accept-package-agreements
 Copy-Item -Path $env:USERPROFILE\Shared\scripts\settings.json -destination $env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json -Force
+$env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+Start-Process code -ArgumentList "--install-extension llvm-vs-code-extensions.vscode-clangd --install-extension aaron-bond.better-comments --install-extension ms-vscode.cmake-tools --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension alefragnani.project-manager --install-extension MagdalenaLipka.tokyo-night-frameless"
 
 Write-Information "Downloading Git and C++ build tools..."
 winget install Git.Git Kitware.CMake --accept-source-agreements --accept-package-agreements
@@ -41,13 +43,13 @@ Invoke-WebRequest -Uri https://github.com/ryanoasis/nerd-fonts/releases/latest/d
 Expand-Archive -Path "JetBrainsMono.zip"
 Remove-Item JetBrainsMono.zip
 # Auto-install fonts (slow)
-# $ShellApplication = New-Object -ComObject shell.application
-# $Fonts = $ShellApplication.NameSpace(0x14)
-# Get-ChildItem -Path ".\JetBrainsMono" -Include '*.ttf' -Recurse | ForEach-Object -Process { $Fonts.CopyHere($_.FullName) }
+$ShellApplication = New-Object -ComObject shell.application
+$Fonts = $ShellApplication.NameSpace(0x14)
+Get-ChildItem -Path ".\JetBrainsMono" -Include '*.ttf' -Recurse | ForEach-Object -Process { $Fonts.CopyHere($_.FullName) }
 
 Write-Information "Installation Completed!"
 
-explorer.exe
+wt cmd /k fastfetch
 
 # Clang & Ninja
 # winget install LLVM.LLVM Ninja-build.Ninja --accept-package-agreements
