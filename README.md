@@ -13,7 +13,6 @@ Clone this repo within `Documents\Projects` or change the `<HostFolder>` paths w
 ## Usage
 
 1) Launch the `sandbox.wsb` file
-2) Wait a few minutes while utilities are downloaded - File Explorer will appear when the scripts are finished running
-3) Open `Terminal Preview` and enter `fastfetch` to view Virtual Machine information (fonts are in your downloads folder)
-4) Compile the test project within `Documents\Projects\test`
-5) Explore the sandbox
+2) Wait a few minutes while utilities are downloaded - `fastfetch` will display VM info when the scripts are finished running
+3) Compile the test project within `Documents\Projects\test`
+4) Explore the sandbox
