@@ -30,12 +30,14 @@ Write-Information "Downloading VSCode..."
 winget install Microsoft.VisualStudioCode --accept-source-agreements --accept-package-agreements
 Copy-Item -Path $env:USERPROFILE\Shared\scripts\settings.json -destination $env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json -Force
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-Start-Process code -ArgumentList "--install-extension llvm-vs-code-extensions.vscode-clangd --install-extension aaron-bond.better-comments --install-extension ms-vscode.cmake-tools --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension alefragnani.project-manager --install-extension MagdalenaLipka.tokyo-night-frameless"
+Start-Process code -ArgumentList "--install-extension ms-vscode.cpptools-extension-pack --install-extension ms-vscode.cmake-tools --install-extension aaron-bond.better-comments --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension alefragnani.project-manager --install-extension MagdalenaLipka.tokyo-night-frameless"
 
 Write-Information "Downloading Git and C++ build tools..."
 winget install Git.Git Kitware.CMake --accept-source-agreements --accept-package-agreements
-winget install Microsoft.VisualStudio.2022.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --add Microsoft.VisualStudio.Component.VC.Llvm.Clang --add Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Llvm.Clang"
+winget install Microsoft.VisualStudio.2022.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
+# Uncomment below if you'd like the MSVC Clang tools
 # winget install Microsoft.VisualStudio.2022.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --add Microsoft.VisualStudio.Component.VC.CLI.Support --add Microsoft.VisualStudio.Component.VC.Llvm.Clang --add Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Llvm.Clang"
+# Uncomment below if you'd like the Visual Sudio IDE
 # winget install Microsoft.VisualStudio.2022.Community.Preview
 
 Write-Information "Downloading Fonts..."
