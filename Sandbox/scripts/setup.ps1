@@ -5,12 +5,9 @@ start-process -filepath "C:\Windows\Resources\Themes\dark.theme"
 $progressPreference = 'silentlyContinue'
 
 Write-Information "Downloading WinGet and its dependencies..."
-Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.8.6/Microsoft.UI.Xaml.2.8.x64.appx -OutFile Microsoft.UI.Xaml.2.8.x64.appx
-Invoke-WebRequest -Uri https://github.com/microsoft/winget-cli/releases/latest/download/Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
-Add-AppxPackage Microsoft.UI.Xaml.2.8.x64.appx
-Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+Install-PackageProvider -Name NuGet -Force | Out-Null
+Install-Module -Name Microsoft.WinGet.Client -Force -Repository PSGallery | Out-Null
+Repair-WinGetPackageManager -IncludePrerelease
 
 Write-Information "Downloading Terminal, PowerShell, and NanaZip..."
 Invoke-WebRequest -Uri https://github.com/microsoft/terminal/releases/download/v1.22.2702.0/Microsoft.WindowsTerminalPreview_1.22.2702.0_8wekyb3d8bbwe.msixbundle -OutFile Microsoft.WindowsTerminalPreview_1.22.2702.0_8wekyb3d8bbwe.msixbundle
@@ -30,15 +27,21 @@ Write-Information "Downloading VSCode..."
 winget install Microsoft.VisualStudioCode --accept-source-agreements --accept-package-agreements
 Copy-Item -Path $env:USERPROFILE\Shared\scripts\settings.json -destination $env:USERPROFILE\AppData\Local\Packages\Microsoft.WindowsTerminalPreview_8wekyb3d8bbwe\LocalState\settings.json -Force
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-Start-Process code -ArgumentList "--install-extension ms-vscode.cpptools-extension-pack --install-extension ms-vscode.cmake-tools --install-extension aaron-bond.better-comments --install-extension usernamehw.errorlens --install-extension eamodio.gitlens --install-extension alefragnani.project-manager --install-extension MagdalenaLipka.tokyo-night-frameless"
+Start-Process code -ArgumentList "--install-extension ms-vscode.cpptools-extension-pack --install-extension ms-vscode.cmake-tools --install-extension llvm-vs-code-extensions.vscode-clangd --install-extension usernamehw.errorlens --install-extension aaron-bond.better-comments --install-extension MagdalenaLipka.tokyo-night-frameless --install-extension chadalen.vscode-jetbrains-icon-theme"
 
 Write-Information "Downloading Git and C++ build tools..."
 winget install Git.Git Kitware.CMake --accept-source-agreements --accept-package-agreements
+
+# Option 1 - MSVC
 winget install Microsoft.VisualStudio.2022.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended"
 # Uncomment below if you'd like the MSVC Clang tools
 # winget install Microsoft.VisualStudio.2022.BuildTools --silent --override "--wait --quiet --add ProductLang En-us --add Microsoft.VisualStudio.Workload.VCTools --includeRecommended --add Microsoft.VisualStudio.Component.VC.CLI.Support --add Microsoft.VisualStudio.Component.VC.Llvm.Clang --add Microsoft.VisualStudio.Component.VC.Llvm.ClangToolset --add Microsoft.VisualStudio.ComponentGroup.NativeDesktop.Llvm.Clang"
 # Uncomment below if you'd like the Visual Sudio IDE
 # winget install Microsoft.VisualStudio.2022.Community.Preview
+
+# Option 2 - Clang & Ninja
+# winget install LLVM.LLVM Ninja-build.Ninja --accept-package-agreements
+# You need to provide c++ std library and Windows SDK
 
 Write-Information "Downloading Fonts..."
 Invoke-WebRequest -Uri https://github.com/ryanoasis/nerd-fonts/releases/latest/download/JetBrainsMono.zip -OutFile JetBrainsMono.zip
@@ -52,16 +55,3 @@ Get-ChildItem -Path ".\JetBrainsMono" -Include '*.ttf' -Recurse | ForEach-Object
 Write-Information "Installation Completed!"
 
 wt cmd /k fastfetch
-
-# Clang & Ninja
-# winget install LLVM.LLVM Ninja-build.Ninja --accept-package-agreements
-
-# MSYS2
-# winget install MSYS2.MSYS2 
-    # pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain
-        # Add the path of your MinGW-w64 bin folder to the Windows PATH environment variable by using the following steps:
-        # In the Windows search bar, type Settings to open your Windows Settings.
-        # Search for Edit environment variables for your account.
-        # In your User variables, select the Path variable and then select Edit.
-        # Select New and add the MinGW-w64 destination folder you recorded during the installation process to the list. If you selected the default installation steps, the path is: C:\msys64\ucrt64\bin.
-        # Select OK, and then select OK again in the Environment Variables window to update the PATH environment variable. You have to reopen any console windows for the updated PATH environment variable to be available.
